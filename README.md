@@ -16,14 +16,14 @@ An AI-powered mock interview platform that simulates real technical interviews. 
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | Streamlit, Plotly, streamlit-monaco, streamlit-mic-recorder |
-| LLM | Amazon Bedrock — Claude 3 Haiku (or Google Gemini as alternative) |
-| Orchestration | LangChain + LangGraph |
-| Speech-to-Text | Faster Whisper (`base.en`, CPU, int8) |
-| Text-to-Speech | Microsoft Edge TTS |
-| Deployment | AWS EC2 (t3.medium), systemd service |
+| Layer          | Technology                                                        |
+| -------------- | ----------------------------------------------------------------- |
+| Frontend       | Streamlit, Plotly, streamlit-monaco, streamlit-mic-recorder       |
+| LLM            | Amazon Bedrock — Claude 3 Haiku (or Google Gemini as alternative) |
+| Orchestration  | LangChain + LangGraph                                             |
+| Speech-to-Text | Faster Whisper (`base.en`, CPU, int8)                             |
+| Text-to-Speech | Microsoft Edge TTS                                                |
+| Deployment     | AWS EC2 (t3.medium), systemd service                              |
 
 ---
 
@@ -152,10 +152,10 @@ Open `http://<ec2-public-ip>:8501` in your browser.
 
 The app supports two LLM backends:
 
-| Backend | Config |
-|---|---|
+| Backend                      | Config                                                                          |
+| ---------------------------- | ------------------------------------------------------------------------------- |
 | **Amazon Bedrock** (default) | Set `AWS_REGION` in `.env`. Auth via IAM role (EC2) or `aws configure` (local). |
-| **Google Gemini** | Set `GOOGLE_API_KEY` in `.env`. Uncomment the Gemini lines in `backend.py`. |
+| **Google Gemini**            | Set `GOOGLE_API_KEY` in `.env`. Uncomment the Gemini lines in `backend.py`.     |
 
 To switch, comment/uncomment the model initialisation in [backend.py](backend.py) (lines 47-51).
 
