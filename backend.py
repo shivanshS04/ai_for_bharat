@@ -122,8 +122,12 @@ def generate_performance_summary(state: ChatState) -> PerformanceSummary:
     
     Analyze the `messages` and `feedbacks` provided to generate this structured assessment.""")
     
-    messages = [system_prompt] + list(state['messages'])
-    
+    history = list(state['messages'])
+    # Nova Converse API requires conversation to start with a HumanMessage
+    if history and isinstance(history[0], AIMessage):
+        history = [HumanMessage(content="Please evaluate my interview performance based on the conversation below.")] + history
+    messages = [system_prompt] + history
+
     try:
         structured_model = model.with_structured_output(PerformanceSummary)
         response = structured_model.invoke(messages)
