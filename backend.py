@@ -60,11 +60,18 @@ Do not ask consecutive coding questions unless the user failed the previous one.
 Aim for a mix of conceptual understanding and practical coding skills."""
     )
     
-    # If this is the first message (empty conversation), add a prompt to start the interview
-    messages_to_send = [system_prompt] + state['messages']
-    if len(state['messages']) == 0:
-        initial_prompt = HumanMessage(content="Please start the interview by asking me your first technical question based on my resume and the role I'm targeting.")
-        messages_to_send.append(initial_prompt)
+    # Build message list — Bedrock Converse API (Nova & others) requires:
+    # 1. SystemMessage handled separately (ChatBedrock does this automatically)
+    # 2. Conversation must start with a HumanMessage
+    history = list(state['messages'])
+    if len(history) == 0:
+        # First turn: kick off the interview with an explicit user prompt
+        history = [HumanMessage(content="Please start the interview by asking me your first technical question based on my resume and the role I'm targeting.")]
+    elif isinstance(history[0], AIMessage):
+        # Subsequent turns where history starts with AI's previous question —
+        # insert a bridging user message so the conversation is HumanMessage-first
+        history = [HumanMessage(content="Please continue the interview.")] + history
+    messages_to_send = [system_prompt] + history
     
     # Use structured output
     structured_model = model.with_structured_output(InterviewResponse)
