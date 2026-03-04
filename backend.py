@@ -40,10 +40,11 @@ class ChatState(TypedDict):
     performance_summary: Annotated[PerformanceSummary | None, 'Final performance summary']
 
 model = ChatBedrock(
-    model_id="anthropic.claude-3-haiku-20240307-v1:0",
+    model_id="amazon.nova-lite-v1:0",
     region_name=os.getenv("AWS_REGION", "us-east-1"),
 )
-# model = ChatGoogleGenerativeAI(model="gemini-2.5-flash")  # alternative
+# model = ChatBedrock(model_id="anthropic.claude-3-haiku-20240307-v1:0", region_name=os.getenv("AWS_REGION", "us-east-1"))  # requires Anthropic use case form
+# model = ChatGoogleGenerativeAI(model="gemini-2.5-flash")  # alternative: set GOOGLE_API_KEY in .env
 
 def initialize_chat(resume: str, job_role: str, experience: str, company_name: str, state: ChatState) -> ChatState:
     system_prompt = SystemMessage(content=f"""You are an AI interview assistant helping a user prepare for technical interviews.
