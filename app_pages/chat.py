@@ -15,7 +15,7 @@ from streamlit_mic_recorder import mic_recorder
 from utils.transcribe import transcribe_audio
 
 def handle_back():
-    st.session_state.page = "page1"
+    st.session_state.page = "dashboard"
 
 def chat():
     # Retrieve data from session state

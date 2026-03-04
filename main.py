@@ -1,11 +1,13 @@
 import streamlit as st
-from app_pages import home, chat, summary
+from app_pages import dashboard, home, chat, summary
 
 def main() :
     if "page" not in st.session_state:
-        st.session_state.page = "page1"
+        st.session_state.page = "dashboard"
 
-    if st.session_state.page == "page1":
+    if st.session_state.page == "dashboard":
+        dashboard.dashboard()
+    elif st.session_state.page == "page1":
         home.home()
     elif st.session_state.page == "page2":
         chat.chat()

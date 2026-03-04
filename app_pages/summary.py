@@ -8,7 +8,7 @@ def summary():
     if "performance_summary" not in st.session_state or not st.session_state.performance_summary:
         st.warning("No performance summary available. Please complete an interview session first.")
         if st.button("Go Home"):
-            st.session_state.page = "page1"
+            st.session_state.page = "dashboard"
             st.rerun()
         return
 
@@ -83,9 +83,6 @@ def summary():
             st.write(f"• {item}")
         
     st.divider()
-    if st.button("Start New Session", type="primary"):
-        # Reset session state
-        for key in list(st.session_state.keys()):
-            del st.session_state[key]
-        st.session_state.page = "page1"
+    if st.button("Back to Dashboard", type="primary"):
+        st.session_state.page = "dashboard"
         st.rerun()
