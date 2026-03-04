@@ -19,12 +19,7 @@ cd ai_for_bharat
 echo "==> [3/6] Create virtualenv & install Python dependencies"
 python3.11 -m venv .venv
 .venv/bin/pip install --no-cache-dir --upgrade pip
-.venv/bin/pip install --no-cache-dir \
-    boto3 python-dotenv nest-asyncio \
-    edge-tts faster-whisper \
-    langchain langchain-core langchain-aws langgraph \
-    langchain-google-genai plotly pydantic pypdf \
-    streamlit streamlit-mic-recorder streamlit-monaco
+.venv/bin/pip install --no-cache-dir .
 
 echo "==> [4/6] Create .env file"
 # Set AWS region — Bedrock auth is handled by the EC2 IAM role (no keys needed)
@@ -59,13 +54,16 @@ sudo systemctl daemon-reload
 sudo systemctl enable interviewer
 sudo systemctl start interviewer
 
+# Fetch public IP using IMDSv2 token
+TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 60")
+PUBLIC_IP=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/public-ipv4)
+
 echo ""
 echo "✅ Setup complete!"
-echo "   App running at: http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4):8501"
+echo "   App running at: http://${PUBLIC_IP}:8501"
 echo "   Check status:   sudo systemctl status interviewer"
 echo "   View logs:      sudo journalctl -u interviewer -f"
 echo ""
 echo "⚠️  Remember to:"
-echo "   1. Enable Bedrock model access in AWS Console → Bedrock → Model Access → Claude 3 Haiku"
-echo "   2. Attach the IAM role with AmazonBedrockFullAccess to this EC2 instance"
-echo "   3. Open port 8501 in your Security Group (TCP, 0.0.0.0/0)"
+echo "   1. Attach an IAM role with AmazonBedrockFullAccess to this EC2 instance"
+echo "   2. Open port 8501 in your Security Group (TCP, 0.0.0.0/0)"

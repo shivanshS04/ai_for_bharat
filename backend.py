@@ -135,13 +135,3 @@ def generate_performance_summary(state: ChatState) -> PerformanceSummary:
         )
     
     return response
-
-# Update ChatState definition to include the new field
-class ChatState(TypedDict):
-    messages: Annotated[Sequence[HumanMessage | AIMessage | SystemMessage], 'List of messages exchanged in the chat']
-    feedbacks: Annotated[List[str], 'List of feedbacks provided by the AI']
-    current_question_type: Annotated[str, 'Type of the current question']
-    performance_summary: Annotated[PerformanceSummary | None, 'Final performance summary']
-
-graph = StateGraph(ChatState)
-graph.add_node("initialize_chat", initialize_chat) # Using string name for node is cleaner
