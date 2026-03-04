@@ -1,6 +1,6 @@
 from typing import Annotated, Sequence, TypedDict, List, Literal
-from langchain_ollama import ChatOllama
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_aws import ChatBedrock
+# from langchain_google_genai import ChatGoogleGenerativeAI  # alternative: set GOOGLE_API_KEY in .env
 from langchain_core.messages import (
     AIMessage,
     HumanMessage,
@@ -10,9 +10,12 @@ from langgraph.graph import StateGraph, START, END
 from pydantic import BaseModel, Field
 from utils.generate_audio import generate_audio
 import asyncio
+import nest_asyncio
 from dotenv import load_dotenv
 import os
+
 load_dotenv()
+nest_asyncio.apply()  # allow asyncio.run() inside Streamlit's running event loop
 
 class InterviewResponse(BaseModel):
     question: str = Field(description="The interview question to ask the candidate.")
@@ -36,10 +39,11 @@ class ChatState(TypedDict):
     current_question_type: Annotated[str, 'Type of the current question']
     performance_summary: Annotated[PerformanceSummary | None, 'Final performance summary']
 
-model = ChatOllama(model="llama3.2")
-# model = ChatGoogleGenerativeAI(
-#     model="gemini-2.5-flash"
-# )
+model = ChatBedrock(
+    model_id="anthropic.claude-3-haiku-20240307-v1:0",
+    region_name=os.getenv("AWS_REGION", "us-east-1"),
+)
+# model = ChatGoogleGenerativeAI(model="gemini-2.5-flash")  # alternative
 
 def initialize_chat(resume: str, job_role: str, experience: str, company_name: str, state: ChatState) -> ChatState:
     system_prompt = SystemMessage(content=f"""You are an AI interview assistant helping a user prepare for technical interviews.

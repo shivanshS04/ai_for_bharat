@@ -75,9 +75,10 @@ def chat():
                 
                 # Check if this is the latest message to attach audio
                 if i == len(st.session_state.messages) - 1:
-                     if os.path.exists("speech.mp3"):
+                     audio_path = os.path.join(os.getenv("AUDIO_DIR", "/tmp"), "speech.mp3")
+                     if os.path.exists(audio_path):
                          should_autoplay = st.session_state.get("autoplay_audio", False)
-                         st.audio("speech.mp3", format="audio/mp3", autoplay=should_autoplay)
+                         st.audio(audio_path, format="audio/mp3", autoplay=should_autoplay)
                          if should_autoplay:
                              st.session_state.autoplay_audio = False
 
