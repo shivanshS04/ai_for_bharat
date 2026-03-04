@@ -1,12 +1,9 @@
 import streamlit as st
 import sys
 import os
-from utils.generate_audio import generate_audio
-import asyncio
 # Ensure root directory is in python path
 sys.path.append(os.path.abspath('.'))
 from backend import initialize_chat, ChatState, generate_performance_summary
-from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.messages import HumanMessage, AIMessage
 
 from streamlit_monaco import st_monaco

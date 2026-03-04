@@ -49,6 +49,9 @@ def initiallize_ai(resume, job_role, experience, company_name):
     
     # CRITICAL: Store ALL session state OUTSIDE the status context and BEFORE rerun
     st.session_state.messages = generated_messages
+    st.session_state.feedbacks = new_state.get('feedbacks', [])
+    st.session_state.current_question_type = new_state.get('current_question_type', 'theory')
+    st.session_state.autoplay_audio = True  # autoplay the first question on chat page load
     st.session_state.page = "page2"
     st.session_state.resume = resume_text
     st.session_state.job_role = job_role

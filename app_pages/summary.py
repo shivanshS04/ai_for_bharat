@@ -60,8 +60,6 @@ def summary():
     
     # --- Textual Feedback ---
     st.divider()
-    # --- Textual Feedback ---
-    st.divider()
     st.subheader("Performance Analysis")
     st.info(f"**Executive Summary:**\n\n{summary_data.summary_text}")
     
